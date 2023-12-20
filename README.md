@@ -41,3 +41,4 @@ JSON is formatted this way
  - Add more patterns :)
  - Add C++ support
  - Add --extensions option
+ - Add more test code
