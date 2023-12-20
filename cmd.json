@@ -1,0 +1,61 @@
+[
+  {
+    "name": "Stack Buffer Overflow",
+    "short": "stack",
+    "commands": [
+      {
+        "code": "{ char $dest[_]; strcpy($dest, _); }",
+        "comment": "Copy stack buffer using strcpy"
+      },
+      {
+        "code": "{ char $dest[_]; strcat($dest, _); }",
+        "comment": "Copy stack buffer using strcat"
+      },
+      {
+        "code": "{ char $dest[_]; sprintf($dest, _, _); }",
+        "comment": "Copy stack buffer using sprintf"
+      },
+      {
+        "code": "{ char $dest[_]; gets($dest); }",
+        "comment": "Copy stack buffer using gets"
+      },
+      {
+        "code": "{ char $dest[_]; memcpy($dest, _, _); }",
+        "comment": "Copy stack buffer using memcpy"
+      },
+      {
+        "code": "{ char $dest[_]; memmove($dest, _, _); }",
+        "comment": "Copy stack buffer using memmove"
+      },
+      {
+        "code":  "{$func();}",
+        "regex" : "func=^gets$",
+        "comment": "Detect gets in code"
+      }
+    ]
+  },
+  {
+    "name": "Heap issues",
+    "short": "heap",
+    "commands": [
+      {
+        "code": "{ $buf = malloc(_); not: free($buf); }",
+        "comment": "Allocated memory not freed"
+      },
+      {
+        "code": "{ $buf = malloc(_); free($buf); free($buf); }",
+        "comment": "Dumb double free"
+      }
+    ]
+  },
+  {
+    "name": "Format string bug",
+    "short": "fmt",
+    "commands": [
+      {
+        "code": "{ strict: printf(_); }",
+        "comment": "Allocated memory not freed"
+      }
+    ]
+  }
+]
