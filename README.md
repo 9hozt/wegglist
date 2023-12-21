@@ -31,8 +31,7 @@ JSON is formatted this way
         "comment": "pattern description"
       }
     ]
-  },
-  ...
+  }
 ]
 ```
 ## TODO
