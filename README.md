@@ -54,6 +54,8 @@ JSON is formatted this way
 ]
 ```
 
+See [base file](cmd.json)
+
 ## How to contribute
 
 Do not hesitate to fork and add you themes and patterns to the cmd.json :) PR are welcome 
