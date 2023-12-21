@@ -2,7 +2,7 @@
 
 ## Introduction
 
-This is a simple weggli wrapper written un Go.  
+This is a simple [weggli](https://github.com/weggli-rs/weggli) wrapper written un Go.  
 The idea is to centralize and sort you patterns.
 Most of the patterns comes from https://github.com/0xdea/weggli-patterns  
 Also inspired by https://dustri.org/b/playing-with-weggli.html
