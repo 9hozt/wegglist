@@ -3,6 +3,8 @@
 ## Introduction
 
 This is a simple weggli wrapper written un Go. The idea is to centralize and sort you patterns
+Most of the patterns comes from https://github.com/0xdea/weggli-patterns
+Also inspired by https://dustri.org/b/playing-with-weggli.html
 
 ## Format
 
@@ -47,3 +49,4 @@ You can also fork and do WTF you want (see [Licence](LICENSE.md))
  - Add C++ support
  - Add --extensions option
  - Add more test code
+ - Add an output to file option

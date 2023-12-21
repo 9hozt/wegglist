@@ -57,5 +57,57 @@
         "comment": "Allocated memory not freed"
       }
     ]
+  },
+  {
+    "name": "Integer miss-use",
+    "short": "intbug",
+    "commands": [
+      {
+        "code": "{$type $var; $var<0;}",
+        "regex": "$type=(unsigned|size_t)",
+        "comment": "Check if unsigned is less than 0"
+      },
+      {
+        "code": "{$type $var; $var<=0;}",
+        "regex": "$type=(unsigned|size_t)",
+        "comment": "Check if unsigned is less than or equal to 0"
+      },
+      {
+        "code": "{$type $var; $var>=0;}",
+        "regex": "$type=(unsigned|size_t)",
+        "comment": "Check if unsigned is greater than or equal to 0"
+      },
+      {
+        "code": "{$type $var=_; $var<0;}",
+        "regex": "$type=(unsigned|size_t)",
+        "comment": "Check if unsigned is less than 0 with initialization"
+      },
+      {
+        "code": "{$type $var=_; $var<=0;}",
+        "regex": "$type=(unsigned|size_t)",
+        "comment": "Check if unsigned is less than or equal to 0 with initialization"
+      },
+      {
+        "code": "{$type $var=_; $var>=0;}",
+        "regex": "$type=(unsigned|size_t)",
+        "comment": "Check if unsigned is greater than or equal to 0 with initialization"
+      }
+    ]
+  },
+  {
+    "name": "Command Injection",
+    "short": "cmdinj",
+    "commands": [
+      {
+        "code": "{$func();}",
+        "regex": "$func=^(system|popen)$",
+        "comment": "Detect system or popen function without argument"
+      },
+      {
+        "code": "{$func($arg);}",
+        "regex": "$func=^(system|popen)$",
+        "comment": "Detect system or popen function with an argument"
+      }
+    ]
   }
 ]
