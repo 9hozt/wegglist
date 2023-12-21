@@ -43,12 +43,10 @@ func getWeggliPath() (string, error) {
 func runWeggli(weggliPath string, command string, path string, regex string) error {
 	var cmdArgs []string
 
-	// Si isRegex est true, ajoute l'option -R avec la regex au début de la commande
 	if regex != "" {
 		cmdArgs = append(cmdArgs, "-R", regex)
 	}
 
-	// Ajoute la commande et le chemin à la fin des arguments
 	cmdArgs = append(cmdArgs, command, path)
 
 	cmd := exec.Command(weggliPath, cmdArgs...)
