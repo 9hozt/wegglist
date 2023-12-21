@@ -7,6 +7,22 @@ The idea is to centralize and sort you patterns.
 Most of the patterns comes from https://github.com/0xdea/weggli-patterns  
 Also inspired by https://dustri.org/b/playing-with-weggli.html
 
+## Usage
+
+```bash
+Usage of ./wegglist:
+  -json string
+        Path to json rules file (default "cmd.json")
+  -list
+        List available themes and exit
+  -list-detailed
+        List available themes with detailed information
+  -path string
+        Path to source code (default ".")
+  -theme string
+        Comma-separated list of themes to analyze. Use 'all' to analyze all themes. (default "all")
+```
+
 ## Format
 
 JSON is formatted this way
