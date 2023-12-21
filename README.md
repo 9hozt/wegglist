@@ -34,6 +34,12 @@ JSON is formatted this way
   }
 ]
 ```
+
+## How to contribute
+
+Do not hesitate to fork and add you themes and patterns to the cmd.json :) PR are welcome 
+You can also fork and do WTF you want (see [Licence](LICENSE.md))
+
 ## TODO
 
  - Add --uniq option
