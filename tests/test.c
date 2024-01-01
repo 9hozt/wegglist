@@ -41,6 +41,35 @@ void uaf()
     printf("%s", buffer);
 }
 
+void fileTest(){
+    FILE * f;
+    f = fopen("/tmp/test", "a")
+    fprintf( f, "Appending data..." );
+    fclose(f);
+}
+
+void unclosed()
+{
+    FILE * f;
+    f = fopen("/tmp/test", "a")
+    if (f == NULL){
+        return 0;
+    }
+    fprintf( f, "Appending data..." );
+}
+
+void loopTest()
+{
+    char b[8];
+    char t[90];
+    read(0, &t, 90);
+    for(int i=0;i<100;i++)
+    {
+        b[i] = t[i];
+    }
+}
+
+
 int main(int argc, char *argv[])
 {
     char *buffer;

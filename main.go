@@ -128,9 +128,9 @@ func main() {
 	fmt.Println("Security code analysis:")
 	for _, theme := range themes {
 		if selectedThemes == "all" || selectedThemeSet[theme.Short] {
-			fmt.Printf("%s:\n", theme.Name)
+			fmt.Printf("Current theme - %s:\n", theme.Name)
 			for _, cmd := range theme.Commands {
-
+				fmt.Printf("%s\n", cmd.Comment)
 				if err := runWeggli(weggliPath, cmd.Code, path, cmd.Regex); err != nil {
 					fmt.Printf("Error while analyzing %s: %v\n", theme.Name, err)
 					return

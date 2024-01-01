@@ -34,6 +34,32 @@
       }
     ]
   },
+
+  {
+    "name": "File operations",
+    "short": "files",
+    "commands": [
+      {
+        "code" : "{$file = fopen(_);not: if( $file == _)_;}",
+        "comment": "Check for unverified fopen/open"
+      },
+      {
+        "code": "{$file = fopen(_); not: fclose($file);}",
+        "comment": "Check unclose fd"
+      }
+    ]
+  },
+  {
+    "name": "Bugs in loops",
+    "short": "loop",
+    "commands": [
+      {
+        "code" : "{ _ $buff[_]; for(_;_;_){$buff[_] = _;}}",
+        "comment": "Stack buffer in a loop"
+      }
+    ]
+  },
+
   {
     "name": "Heap issues",
     "short": "heap",
@@ -45,6 +71,10 @@
       {
         "code": "{ $buf = malloc(_); free($buf); free($buf); }",
         "comment": "Dumb double free"
+      },
+      {
+        "code": "{ $buf = malloc(); not if($buff);}",
+        "comment": "Find unverified malloc results"
       }
     ]
   },
