@@ -1,5 +1,7 @@
 # wegglist
 
+![demoe](demo.gif)
+
 ## Introduction
 
 This is a simple [weggli](https://github.com/weggli-rs/weggli) wrapper written in Go.  
