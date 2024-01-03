@@ -56,7 +56,7 @@ JSON is formatted this way
 ]
 ```
 
-See [base file](cmd.json)
+See [base file](cmd.json).
 
 ## How to contribute
 
@@ -65,7 +65,7 @@ You can also fork and do WTF you want (see [Licence](LICENSE.md))
 
 ## TODO
 
- - Add --uniq option
+ - Add --unique option
  - Add more patterns :)
  - Add C++ support
  - Add --extensions option
