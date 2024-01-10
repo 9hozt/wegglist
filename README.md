@@ -65,7 +65,7 @@ You can also fork and do WTF you want (see [Licence](LICENSE.md))
 
 ## TODO
 
- - Add --unique option
+ - ~~Add --unique option~~
  - Add more patterns :)
  - Add C++ support
  - Add --extensions option
