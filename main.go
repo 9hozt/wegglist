@@ -14,6 +14,7 @@ import (
 type Command struct {
 	Code    string `json:"code"`
 	Regex   string `json:"regex"`
+	Unique  bool   `json:"unique"`
 	Comment string `json:"comment"`
 }
 
@@ -40,15 +41,18 @@ func getWeggliPath() (string, error) {
 	return strings.TrimSpace(string(output)), nil
 }
 
-func runWeggli(weggliPath string, command string, path string, regex string) error {
+func runWeggli(weggliPath string, command string, path string, regex string, unique bool) error {
 	var cmdArgs []string
 
 	if regex != "" {
 		cmdArgs = append(cmdArgs, "-R", regex)
 	}
 
-	cmdArgs = append(cmdArgs, command, path)
+	if unique == true {
+		cmdArgs = append(cmdArgs, "--unique")
+	}
 
+	cmdArgs = append(cmdArgs, command, path)
 	cmd := exec.Command(weggliPath, cmdArgs...)
 	cmd.Stdout = os.Stdout
 	cmd.Stderr = os.Stderr
@@ -131,7 +135,7 @@ func main() {
 			fmt.Printf("Current theme - %s:\n", theme.Name)
 			for _, cmd := range theme.Commands {
 				fmt.Printf("%s\n", cmd.Comment)
-				if err := runWeggli(weggliPath, cmd.Code, path, cmd.Regex); err != nil {
+				if err := runWeggli(weggliPath, cmd.Code, path, cmd.Regex, cmd.Unique); err != nil {
 					fmt.Printf("Error while analyzing %s: %v\n", theme.Name, err)
 					return
 				}

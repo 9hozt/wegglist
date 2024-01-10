@@ -1,7 +1,7 @@
 [
   {
-    "name": "Stack Buffer Overflow",
-    "short": "stack",
+    "name": "Buffer Overflow",
+    "short": "overflow",
     "commands": [
       {
         "code": "{ char $dest[_]; strcpy($dest, _); }",
@@ -31,6 +31,12 @@
         "code":  "{$func();}",
         "regex" : "func=^gets$",
         "comment": "Detect gets in code"
+      },
+      {
+        "code" : "$func($dest, $src, $size($src));",
+        "regex": "func=co?py;size=sizeof|strlen",
+        "comment" : "check copy based on source",
+        "unique": true
       }
     ]
   },
@@ -121,6 +127,11 @@
         "code": "{$type $var=_; $var>=0;}",
         "regex": "$type=(unsigned|size_t)",
         "comment": "Check if unsigned is greater than or equal to 0 with initialization"
+      },
+      {
+        "code" : "$a = 0; _ / $a",
+        "unique": true,
+        "comment" : "divide by 0"
       }
     ]
   },

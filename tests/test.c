@@ -69,6 +69,19 @@ void loopTest()
     }
 }
 
+void malloccpy(){
+    char input[21];
+    read(0,input,100)
+    char *buff = malloc(strlen(input));
+    strcpy(buff,input);
+}
+
+
+void divzero(){
+    int d = 0;
+    char *junk;
+    int res = 12 / d;
+}
 
 int main(int argc, char *argv[])
 {
