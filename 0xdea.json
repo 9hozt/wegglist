@@ -1,0 +1,287 @@
+[
+  {
+    "name": "Buffer Overflow",
+    "short": "overflow",
+    "commands": [
+      {
+        "code": "{$func();}",
+        "regex": "func=^gets$",
+        "comment": "call to unbounded copy functions (CWE-120, CWE-242, CWE-676)"
+      },
+      {
+        "code": "{$func();}",
+        "regex": "func=st(r|p)(cpy|cat)$",
+        "comment": "call to unbounded copy functions (CWE-120, CWE-242, CWE-676)"
+      },
+      {
+        "code": "{$func();}",
+        "regex": "func=wc(s|p)(cpy|cat)$",
+        "comment": "call to unbounded copy functions (CWE-120, CWE-242, CWE-676)"
+      },
+      {
+        "code": "{$func();}",
+        "regex": "func=sprintf$",
+        "comment": "call to unbounded copy functions (CWE-120, CWE-242, CWE-676)"
+      },
+      {
+        "code": "{$func();}",
+        "regex": "func=scanf$",
+        "comment": "call to unbounded copy functions (CWE-120, CWE-242, CWE-676)"
+      },
+      {
+        "code": "{strncat(_,_,sizeof(_));}",
+        "comment": "incorrect use of strncat (CWE-193, CWE-787)"
+      },
+      {
+        "code": "{strncat(_,_,strlen(_));}",
+        "comment": "incorrect use of strncat (CWE-193, CWE-787)"
+      },
+      {
+        "code": "{strncat($dst,$src,sizeof($dst)-strlen($dst));}",
+        "comment": "incorrect use of strncat (CWE-193, CWE-787)"
+      },
+      {
+        "code": "{_ $buf[$len]; strncat($buf,_,$len);}",
+        "comment": "incorrect use of strncat (CWE-193, CWE-787)"
+      },
+      {
+        "code": "{$func(_,$src,_($src));}",
+        "regex": "func=cpy$",
+        "comment": "destination buffer access using size of source buffer (CWE-806)"
+      },
+      {
+        "code": "{$len=_($src); $func(_,$src,$len);}",
+        "regex": "func=cpy$",
+        "comment": "destination buffer access using size of source buffer (CWE-806)"
+      },
+      {
+        "code": "{_ $src[$len]; $func($dst,$src,$len);}",
+        "regex": "func=cpy$",
+        "comment": "destination buffer access using size of source buffer (CWE-806)"
+      },
+      {
+        "code": "{_* $ptr; sizeof($ptr);}",
+        "comment": "use of sizeof() on a pointer type (CWE-467)"
+      },
+      {
+        "code": "{_* $ptr=_; sizeof($ptr);}",
+        "comment": "use of sizeof() on a pointer type (CWE-467)"
+      },
+      {
+        "code": "_ $func(_* $ptr) {sizeof($ptr);}",
+        "comment": "use of sizeof() on a pointer type (CWE-467)"
+      },
+      {
+        "code": "sizeof('_')",
+        "comment": "use of sizeof() on a character constant"
+      },
+      {
+        "code": "{$func($buf,_); not:$buf[_]=_;}",
+        "regex": "func=ncpy$",
+        "comment": "lack of explicit NUL-termination after strncpy(), etc. (CWE-170)"
+      },
+      {
+        "code": "{$buf[sizeof($buf)];}",
+        "comment": "off-by-one error (CWE-193)"
+      },
+      {
+        "code": "{_ $buf[$len]; $buf[$len]=_;}",
+        "comment": "off-by-one error (CWE-193)"
+      },
+      {
+        "code": "{strlen($src)>sizeof($dst);}",
+        "comment": "off-by-one error (CWE-193)"
+      },
+      {
+        "code": "{strlen($src)<=sizeof($dst);}",
+        "comment": "off-by-one error (CWE-193)"
+      },
+      {
+        "code": "{sizeof($dst)<strlen($src);}",
+        "comment": "off-by-one error (CWE-193)"
+      },
+      {
+        "code": "{sizeof($dst)>=strlen($src);}",
+        "comment": "off-by-one error (CWE-193)"
+      },
+      {
+        "code": "{$buf[strlen($buf)-1];}",
+        "comment": "off-by-one error (CWE-193)"
+      },
+      {
+        "code": "{$func(strlen($buf));}",
+        "regex": "func=allocf?$",
+        "comment": "off-by-one error (CWE-193)"
+      },
+      {
+        "code": "{$len=strlen(_); $ptr=$func($len);}",
+        "regex": "func=allocf?$",
+        "comment": "off-by-one error (CWE-193)"
+      },
+      {
+        "code": "{$len=snprintf(_); $ptr=$func($len);}",
+        "regex": "func=allocf?$",
+        "comment": "off-by-one error (CWE-193)"
+      },
+      {
+        "code": "{_* $ptr1; $ptr1-$ptr2;}",
+        "comment": "use of pointer subtraction to determine size (CWE-469)"
+      },
+      {
+        "code": "{_* $ptr2; $ptr1-$ptr2;}",
+        "comment": "use of pointer subtraction to determine size (CWE-469)"
+      },
+      {
+        "code": "{_* $ptr1=_; $ptr1-$ptr2;}",
+        "comment": "use of pointer subtraction to determine size (CWE-469)"
+      },
+      {
+        "code": "{_* $ptr2=_; $ptr1-$ptr2;}",
+        "comment": "use of pointer subtraction to determine size (CWE-469)"
+      },
+      {
+        "code": "_ $func(_* $ptr1) {$ptr1-$ptr2;}",
+        "comment": "use of pointer subtraction to determine size (CWE-469)"
+      },
+      {
+        "code": "_ $func(_* $ptr2) {$ptr1-$ptr2;}",
+        "comment": "use of pointer subtraction to determine size (CWE-469)"
+      },
+      {
+        "code": "{$ret=$func();}",
+        "regex": "func=(nprintf|lcpy|lcat)$",
+        "comment": "potentially unsafe use of the return value of snprintf(), etc. (CWE-787)"
+      },
+      {
+        "code": "{_ $buf[_]; $func($buf,_);}",
+        "regex": "func=(cpy|cat|memmove|memset|sn?printf)$",
+        "comment": "direct write into buffer allocated on the stack (CWE-121)"
+      },
+      {
+        "code": "{_ $buf[_]; $buf[_]=_;}",
+        "comment": "direct write into buffer allocated on the stack (CWE-121)"
+      }
+    ]
+  },
+  {
+    "name": "integer overflows",
+    "short": "integer",
+    "commands": [
+      {
+        "code": "{$type $var; $var<0;}",
+        "regex": "$type=(unsigned|size_t)",
+        "comment": "incorrect unsigned comparison (CWE-697)"
+      },
+      {
+        "code": "{$type $var; $var<=0;}",
+        "regex": "$type=(unsigned|size_t)",
+        "comment": "incorrect unsigned comparison (CWE-697)"
+      },
+      {
+        "code": "{$type $var; $var>=0;}",
+        "regex": "$type=(unsigned|size_t)",
+        "comment": "incorrect unsigned comparison (CWE-697)"
+      },
+      {
+        "code": "{$type $var=_; $var<0;}",
+        "regex": "$type=(unsigned|size_t)",
+        "comment": "incorrect unsigned comparison (CWE-697)"
+      },
+      {
+        "code": "{$type $var=_; $var<=0;}",
+        "regex": "$type=(unsigned|size_t)",
+        "comment": "incorrect unsigned comparison (CWE-697)"
+      },
+      {
+        "code": "{$type $var=_; $var>=0;}",
+        "regex": "$type=(unsigned|size_t)",
+        "comment": "incorrect unsigned comparison (CWE-697)"
+      },
+      {
+        "code": "{int $len; $copy(_,_,$len);}",
+        "regex": "$copy=(cpy|ncat)$",
+        "comment": "signed/unsigned conversion (CWE-195, CWE-196)"
+      },
+      {
+        "code": "{int $len=_; $copy(_,_,$len);}",
+        "regex": "$copy=(cpy|ncat)$",
+        "comment": "signed/unsigned conversion (CWE-195, CWE-196)"
+      },
+      {
+        "code": "_ $func(int $len) {$copy(_,_,$len);}",
+        "regex": "$copy=(cpy|ncat)$",
+        "comment": "signed/unsigned conversion (CWE-195, CWE-196)"
+      },
+      {
+        "code": "{int $len; $copy(_,$len);}",
+        "regex": "$copy=nprintf$",
+        "comment": "signed/unsigned conversion (CWE-195, CWE-196)"
+      },
+      {
+        "code": "{int $len=_; $copy(_,$len);}",
+        "regex": "$copy=nprintf$",
+        "comment": "signed/unsigned conversion (CWE-195, CWE-196)"
+      },
+      {
+        "code": "_ $func(int $len) {$copy(_,$len);}",
+        "regex": "$copy=nprintf$",
+        "comment": "signed/unsigned conversion (CWE-195, CWE-196)"
+      },
+      {
+        "code": "{$type $var1; int $var2; $var2=_($var1);}",
+        "regex": "$type=(unsigned|size_t)",
+        "comment": "signed/unsigned conversion (CWE-195, CWE-196)"
+      },
+      {
+        "code": "{$type $var1; int $var2; $var1=_($var2);}",
+        "regex": "$type=(unsigned|size_t)",
+        "comment": "signed/unsigned conversion (CWE-195, CWE-196)"
+      },
+      {
+        "code": "{$type $var1; int $var2=_($var1);}",
+        "regex": "$type=(unsigned|size_t)",
+        "comment": "signed/unsigned conversion (CWE-195, CWE-196)"
+      },
+      {
+        "code": "{int $var1; $type $var2; $var2=_($var1);}",
+        "regex": "$type=(unsigned|size_t)",
+        "comment": "signed/unsigned conversion (CWE-195, CWE-196)"
+      },
+      {
+        "code": "{int $var1; $type $var2; $var1=_($var2);}",
+        "regex": "$type=(unsigned|size_t)",
+        "comment": "signed/unsigned conversion (CWE-195, CWE-196)"
+      },
+      {
+        "code": "{int $var1=_; $type $var2=_($var1);}",
+        "regex": "$type=(unsigned|size_t)",
+        "comment": "signed/unsigned conversion (CWE-195, CWE-196)"
+      },
+      {
+        "code": "_ $func(int $var2) {$type $var1; $var1=_($var2);}",
+        "regex": "$type=(unsigned|size_t)",
+        "comment": "signed/unsigned conversion (CWE-195, CWE-196)"
+      },
+      {
+        "code": "_ $func(int $var2) {$type $var1=_($var2);}",
+        "regex": "$type=(unsigned|size_t)",
+        "comment": "signed/unsigned conversion (CWE-195, CWE-196)"
+      },
+      {
+        "code": "$type $func(_) {int $var; return $var;}",
+        "regex": "$type=(unsigned|size_t)",
+        "comment": "signed/unsigned conversion (CWE-195, CWE-196)"
+      },
+      {
+        "code": "int $func(_) {$type $var; return $var;}",
+        "regex": "$type=(unsigned|size_t)",
+        "comment": "signed/unsigned conversion (CWE-195, CWE-196)"
+      },
+      {
+        "code": "{$type $large; char $narrow; $narrow = $large; }",
+        "regex": "type=(short|int|long)",
+        "comment": "integer truncation (CWE-197)"
+      }
+    ]
+  }
+]
