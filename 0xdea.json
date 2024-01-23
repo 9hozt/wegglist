@@ -60,18 +60,6 @@
         "comment": "destination buffer access using size of source buffer (CWE-806)"
       },
       {
-        "code": "{_* $ptr; sizeof($ptr);}",
-        "comment": "use of sizeof() on a pointer type (CWE-467)"
-      },
-      {
-        "code": "{_* $ptr=_; sizeof($ptr);}",
-        "comment": "use of sizeof() on a pointer type (CWE-467)"
-      },
-      {
-        "code": "_ $func(_* $ptr) {sizeof($ptr);}",
-        "comment": "use of sizeof() on a pointer type (CWE-467)"
-      },
-      {
         "code": "sizeof('_')",
         "comment": "use of sizeof() on a character constant"
       },
@@ -281,6 +269,453 @@
         "code": "{$type $large; char $narrow; $narrow = $large; }",
         "regex": "type=(short|int|long)",
         "comment": "integer truncation (CWE-197)"
+      },
+      {
+        "code": "{$type $large; char $narrow = $large; }",
+        "regex": "type=(short|int|long)",
+        "comment": "integer truncation (CWE-197)"
+      },
+      {
+        "code": "{$type $large; short $narrow; $narrow = $large; }",
+        "regex": "type=(int|long)",
+        "comment": "integer truncation (CWE-197)"
+      },
+      {
+        "code": "{$type $large; short $narrow = $large; }",
+        "regex": "type=(int|long)",
+        "comment": "integer truncation (CWE-197)"
+      },
+      {
+        "code": "{long $large; int $narrow; $narrow = $large; }",
+        "comment": "integer truncation (CWE-197)"
+      },
+      {
+        "code": "{long $large; int $narrow = $large; }",
+        "comment": "integer truncation (CWE-197)"
+      },
+      {
+        "code": "_ $func($type $large) {char $narrow = $large; }",
+        "regex": "type=(short|int|long)",
+        "comment": "integer truncation (CWE-197)"
+      },
+      {
+        "code": "_ $func($type $large) {char $narrow; $narrow = $large; }",
+        "regex": "type=(short|int|long)",
+        "comment": "integer truncation (CWE-197)"
+      },
+      {
+        "code": "_ $func($type $large) {short $narrow; $narrow = $large; }",
+        "regex": "type=(int|long)",
+        "comment": "integer truncation (CWE-197)"
+      },
+      {
+        "code": "_ $func($type $large) {short $narrow = $large; }",
+        "regex": "type=(int|long)",
+        "comment": "integer truncation (CWE-197)"
+      },
+      {
+        "code": "_ $func(long $large) {int $narrow; $narrow = $large; }",
+        "comment": "integer truncation (CWE-197)"
+      },
+      {
+        "code": "_ $func(long $large) {int $narrow = $large; }",
+        "comment": "integer truncation (CWE-197)"
+      },
+      {
+        "code": "short _",
+        "comment": "use of signed or short sizes, lengths, offsets, counts (CWE-190, CWE-680)"
+      },
+      {
+        "code": "int _",
+        "comment": "use of signed or short sizes, lengths, offsets, counts (CWE-190, CWE-680)"
+      },
+      {
+        "code": "{short $len; $len=$func();}",
+        "regex": "func=(str|wcs)len$",
+        "comment": "cast of the return value of strlen(), wcslen() to short (CWE-190, CWE-680)"
+      },
+      {
+        "code": "{$func(_*_);}",
+        "regex": "func=allocf?$",
+        "comment": "integer wraparound (CWE-128, CWE-131, CWE-190, CWE-680)"
+      },
+      {
+        "code": "{$func(_+_);}",
+        "regex": "func=allocf?$",
+        "comment": "integer wraparound (CWE-128, CWE-131, CWE-190, CWE-680)"
+      },
+      {
+        "code": "{$n=_*_; $func($n);}",
+        "regex": "func=allocf?$",
+        "comment": "integer wraparound (CWE-128, CWE-131, CWE-190, CWE-680)"
+      },
+      {
+        "code": "{$n=_+_; $func($n);}",
+        "regex": "func=allocf?$",
+        "comment": "integer wraparound (CWE-128, CWE-131, CWE-190, CWE-680)"
+      },
+      {
+        "code": "{$alloc($x*_); $copy(_,_,$x);}",
+        "regex": "alloc=allocf?$",
+        "comment": "integer wraparound (CWE-128, CWE-131, CWE-190, CWE-680)"
+      },
+      {
+        "code": "{$alloc($x+_); $copy(_,_,$x);}",
+        "regex": "alloc=allocf?$",
+        "comment": "integer wraparound (CWE-128, CWE-131, CWE-190, CWE-680)"
+      },
+      {
+        "code": "{$n=_*_; $alloc($n); $copy(_,_,$x);}",
+        "regex": "alloc=allocf?$",
+        "comment": "integer wraparound (CWE-128, CWE-131, CWE-190, CWE-680)"
+      },
+      {
+        "code": "{$n=_+_; $alloc($n); $copy(_,_,$x);}",
+        "regex": "alloc=allocf?$",
+        "comment": "integer wraparound (CWE-128, CWE-131, CWE-190, CWE-680)"
+      },
+      {
+        "code": "{$x>_||($x+$y)>_;}",
+        "comment": "integer wraparound (CWE-128, CWE-131, CWE-190, CWE-680)"
+      },
+      {
+        "code": "{$x>=_||($x+$y)>_;}",
+        "comment": "integer wraparound (CWE-128, CWE-131, CWE-190, CWE-680)"
+      },
+      {
+        "code": "{$x>_||($x+$y)>=_;}",
+        "comment": "integer wraparound (CWE-128, CWE-131, CWE-190, CWE-680)"
+      },
+      {
+        "code": "{$x>=_||($x+$y)>=_;}",
+        "comment": "integer wraparound (CWE-128, CWE-131, CWE-190, CWE-680)"
+      },
+      {
+        "code": "{$x<_&&($x+$y)<_;}",
+        "comment": "integer wraparound (CWE-128, CWE-131, CWE-190, CWE-680)"
+      },
+      {
+        "code": "{$x<=_&&($x+$y)<_;}",
+        "comment": "integer wraparound (CWE-128, CWE-131, CWE-190, CWE-680)"
+      },
+      {
+        "code": "{$x<_&&($x+$y)<=_;}",
+        "comment": "integer wraparound (CWE-128, CWE-131, CWE-190, CWE-680)"
+      },
+      {
+        "code": "{$x<=_&&($x+$y)<=_;}",
+        "comment": "integer wraparound (CWE-128, CWE-131, CWE-190, CWE-680)"
+      },
+      {
+        "code": "{$x>_||($x*$y)>_;}",
+        "comment": "integer wraparound (CWE-128, CWE-131, CWE-190, CWE-680)"
+      },
+      {
+        "code": "{$x>=_||($x*$y)>_;}",
+        "comment": "integer wraparound (CWE-128, CWE-131, CWE-190, CWE-680)"
+      },
+      {
+        "code": "{$x>_||($x*$y)>=_;}",
+        "comment": "integer wraparound (CWE-128, CWE-131, CWE-190, CWE-680)"
+      },
+      {
+        "code": "{$x>=_||($x*$y)>=_;}",
+        "comment": "integer wraparound (CWE-128, CWE-131, CWE-190, CWE-680)"
+      },
+      {
+        "code": "{$x<_&&($x*$y)<_;}",
+        "comment": "integer wraparound (CWE-128, CWE-131, CWE-190, CWE-680)"
+      },
+      {
+        "code": "{$x<=_&&($x*$y)<_;}",
+        "comment": "integer wraparound (CWE-128, CWE-131, CWE-190, CWE-680)"
+      },
+      {
+        "code": "{$x<_&&($x*$y)<=_;}",
+        "comment": "integer wraparound (CWE-128, CWE-131, CWE-190, CWE-680)"
+      },
+      {
+        "code": "{$x<=_&&($x*$y)<=_;}",
+        "comment": "integer wraparound (CWE-128, CWE-131, CWE-190, CWE-680)"
+      }
+    ]
+  },
+  {
+    "name": "format string",
+    "short": "integer",
+    "commands": [
+        {
+          "code": "{$func();}",
+          "regex": "func=(printf|scanf|syslog|printk|warn|vwarn|warnx|vwarnx|err|verr|errx|verrx|warnc|vwarnc|errc|verrc)$",
+          "comment": "call to printf(), scanf(), syslog() family functions (CWE-134)"
+        }
+      ]
+  },
+  {
+    "name": "memory management",
+    "short": "memory",
+    "commands": [
+      {
+        "code": "{$func();}",
+        "regex": "func=alloca$",
+        "comment": "call to alloca() (CWE-676, CWE-1325)"
+      },
+      {
+        "code": "{free($ptr); not:$ptr=_; not:free($ptr); _($ptr);}",
+        "comment": "use after free (CWE-416)"
+      },
+      {
+        "code": "{free($ptr); not:$ptr=_; free($ptr);}",
+        "comment": "double free (CWE-415)"
+      },
+      {
+        "code": "{_ $ptr[]; free($ptr);}",
+        "comment": "calling free() on memory not allocated in the heap (CWE-590)"
+      },
+      {
+        "code": "{_ $var; free(&$var);}",
+        "comment": "calling free() on a stack-allocated variable (CWE-590)"
+      },
+      {
+        "code": "{$ret=$func(); not:if(_($ret)){};}",
+        "regex": "func=allocf?$",
+        "comment": "unchecked return code of malloc(), etc. (CWE-252, CWE-690)"
+      },
+      {
+        "code": "{_ $ptr[]; putenv($ptr);}",
+        "comment": "call to putenv() with a stack-allocated variable (CWE-686)"
+      },
+      {
+        "code": "{not:$ptr=$func(); free($ptr);}",
+        "regex": "func=allocf?$|strdn?up$",
+        "comment": "mismatched memory management routines (CWE-762)"
+      }
+
+    ]
+  },
+  {
+    "name": "Command injection",
+    "short": "cmdinj",
+    "commands": [
+      {
+        "code": "{$func();}",
+        "regex": "func=(system|popen)$",
+        "comment": "call to system(), popen() without arguments (CWE-78, CWE-88, CWE-676)"
+      },
+      {
+        "code": "{$func($arg);}",
+        "regex": "func=(system|popen)$",
+        "comment": "call to system(), popen() with arguments (CWE-78, CWE-88, CWE-676)"
+      }
+    ]
+  },
+  {
+    "name": "race conditions",
+    "short": "race",
+    "commands": [
+      {
+        "code": "{$func();}",
+        "regex": "func=(access|l?stat)$",
+        "comment": "call to access(), stat(), lstat() (CWE-367)"
+      },
+      {
+        "code": "{$func();}",
+        "regex": "func=(mktemp|te?mpnam)$",
+        "comment": "call to mktemp(), tmpnam(), tempnam() (CWE-377)"
+      },
+      {
+        "code": "{$func();}",
+        "regex": "func=signal$",
+        "comment": "call to signal() (CWE-364, CWE-479, CWE-828)"
+      }
+    ]
+  },
+  {
+    "name": "privilege management",
+    "short": "priv",
+    "commands": [
+      {
+        "code": "{not:setuid(0); setuid(); setgid();}",
+        "comment": "privilege management functions called in the wrong order (CWE-696)"
+      },
+      {
+        "code": "{not:seteuid(0); seteuid(); not:seteuid(0); setegid();}",
+        "comment": "privilege management functions called in the wrong order (CWE-696)"
+      },
+      {
+        "code": "{not:seteuid(0); seteuid(); not:seteuid(0); setuid();}",
+        "comment": "privilege management functions called in the wrong order (CWE-696)"
+      },
+      {
+        "code": "{not:seteuid(0); seteuid(); not:seteuid(0); seteuid();}",
+        "comment": "privilege management functions called in the wrong order (CWE-696)"
+      },
+      {
+        "code": "{strict:$func();}",
+        "regex": "func=sete?uid$",
+        "comment": "unchecked return code of setuid(), seteuid() (CWE-252)"
+      }
+    ]
+  },
+  {
+    "name": "Miscellaneous",
+    "short": "misc",
+    "commands":
+    [
+      {
+        "code": "{not:setuid(0); setuid(); setgid();}",
+        "comment": "privilege management functions called in the wrong order (CWE-696)"
+      },
+      {
+        "code": "{not:seteuid(0); seteuid(); not:seteuid(0); setegid();}",
+        "comment": "privilege management functions called in the wrong order (CWE-696)"
+      },
+      {
+        "code": "{not:seteuid(0); seteuid(); not:seteuid(0); setuid();}",
+        "comment": "privilege management functions called in the wrong order (CWE-696)"
+      },
+      {
+        "code": "{not:seteuid(0); seteuid(); not:seteuid(0); seteuid();}",
+        "comment": "privilege management functions called in the wrong order (CWE-696)"
+      },
+      {
+        "code": "{strict:$func();}",
+        "regex": "func=sete?uid$",
+        "comment": "unchecked return code of setuid(), seteuid() (CWE-252)"
+      },
+      {
+        "code": "{$func();}",
+        "regex": "func=(system|popen)$",
+        "comment": "call to system(), popen() without arguments (CWE-78, CWE-88, CWE-676)"
+      },
+      {
+        "code": "{$func($arg);}",
+        "regex": "func=(system|popen)$",
+        "comment": "call to system(), popen() with arguments (CWE-78, CWE-88, CWE-676)"
+      },
+      {
+        "code": "{$func();}",
+        "regex": "func=(access|l?stat)$",
+        "comment": "call to access(), stat(), lstat() (CWE-367)"
+      },
+      {
+        "code": "{$func();}",
+        "regex": "func=(mktemp|te?mpnam)$",
+        "comment": "call to mktemp(), tmpnam(), tempnam() (CWE-377)"
+      },
+      {
+        "code": "{$func();}",
+        "regex": "func=s?rand$",
+        "comment": "call to rand(), srand() (CWE-330, CWE-338)"
+      },
+      {
+        "code": "{$func($dst,_,$dst);}",
+        "regex": "func=^sn?printf$",
+        "comment": "source and destination overlap in sprintf(), snprintf()"
+      },
+      {
+        "code": "{$func($dst,_,_,$dst);}",
+        "regex": "func=^sn?printf$",
+        "comment": "source and destination overlap in sprintf(), snprintf()"
+      },
+      {
+        "code": "{$func($dst,_,_,_,$dst);}",
+        "regex": "func=^sn?printf$",
+        "comment": "source and destination overlap in sprintf(), snprintf()"
+      },
+      {
+        "code": "{not:$ptr=$func(); free($ptr);}",
+        "regex": "func=allocf?$|strdn?up$",
+        "comment": "mismatched memory management routines (CWE-762)"
+      },
+
+      {
+        "code": "{$assert(_<_);}",
+        "regex": "assert=(?i)^\\w*assert\\w*\\s*$",
+        "comment": "size check implemented with an assertion macro"
+      },
+      {
+        "code": "{$assert(_<=_);}",
+        "regex": "assert=(?i)^\\w*assert\\w*\\s*$",
+        "comment": "size check implemented with an assertion macro"
+      },
+      {
+        "code": "{$assert(_>_);}",
+        "regex": "assert=(?i)^\\w*assert\\w*\\s*$",
+        "comment": "size check implemented with an assertion macro"
+      },
+      {
+        "code": "{$assert(_>=_);}",
+        "regex": "assert=(?i)^\\w*assert\\w*\\s*$",
+        "comment": "size check implemented with an assertion macro"
+      },
+      {
+        "code": "{strict:$func();}",
+        "regex": "func=scanf$",
+        "comment": "unchecked return code of scanf(), etc. (CWE-252)"
+      },
+      {
+        "code": "{$func();}",
+        "regex": "func=ato(i|ll?|f)$",
+        "comment": "call to atoi(), atol(), atof(), atoll()"
+      },
+      {
+        "code": "{$var[_];}",
+        "regex": "var=argv|envp",
+        "comment": "command-line argument or environment variable access"
+      },
+      {
+        "code": "switch(_) {_; not:default:_; _;}",
+        "comment": "missing default case in a switch construct (CWE-478)"
+      },
+      {
+        "code": "switch(_) {case _: not:break; not:exit; not:return; not:goto _; case _:_;}",
+        "comment": "missing break or equivalent statement in a switch construct (CWE-484)"
+      },
+      {
+        "code": "$type $func(_) {_; not:return;}",
+        "regex": "type!=void",
+        "comment": "missing return statement in a non-void function (CWE-393, CWE-394)"
+      },
+      {
+        "code": "{for (_==_;_;_) {}}",
+        "comment": "typos with security implications (CWE-480, CWE-481, CWE-482, CWE-483)"
+      },
+      {
+        "code": "if (_=_) {}",
+        "comment": "typos with security implications (CWE-480, CWE-481, CWE-482, CWE-483)"
+      },
+      {
+        "code": "if (_&_) {}",
+        "comment": "typos with security implications (CWE-480, CWE-481, CWE-482, CWE-483)"
+      },
+      {
+        "code": "if (_|_) {}",
+        "comment": "typos with security implications (CWE-480, CWE-481, CWE-482, CWE-483)"
+      },
+      {
+        "code": "{_=+_;}",
+        "comment": "typos with security implications (CWE-480, CWE-481, CWE-482, CWE-483)"
+      },
+      {
+        "code": "{_=-_;}",
+        "comment": "typos with security implications (CWE-480, CWE-481, CWE-482, CWE-483)"
+      },
+      {
+        "code": "if ($func()==_) {}",
+        "regex": "func=strn?cpy$",
+        "comment": "typos with security implications (CWE-480, CWE-481, CWE-482, CWE-483)"
+      },
+
+      {
+        "code": "_ $func(_) {}",
+        "regex": "func=(?i)(encode|decode|convert|interpret|compress|fragment|reassemble)",
+        "comment": "keywords related to encoding/decoding, conversion, interpretation, compression, fragmentation, reassembly"
+      },
+      {
+        "code": "_ $func(_) {}",
+        "regex": "func=(?i)(mutex|lock|toctou|parallelism|semaphore|retain|release|garbage|mutual)",
+        "comment": "keywords related to mutex, lock, TOCTOU, parallelism, semaphore, retain, release, garbage, mutual"
       }
     ]
   }
