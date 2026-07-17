@@ -4,10 +4,20 @@
 
 ## Introduction
 
-This is a simple [weggli](https://github.com/weggli-rs/weggli) wrapper written in Go.  
-The idea is to centralize and sort you patterns.
-Most of the patterns comes from https://github.com/0xdea/weggli-patterns  
-Also inspired by https://dustri.org/b/playing-with-weggli.html
+wegglist is a Go wrapper around [weggli](https://github.com/weggli-rs/weggli) that centralizes and organizes semantic search patterns into themes, so a full set of patterns can be run against a codebase in a single command instead of one `weggli` invocation per pattern.
+
+Most patterns are sourced from [0xdea/weggli-patterns](https://github.com/0xdea/weggli-patterns). The project was also inspired by [this article](https://dustri.org/b/playing-with-weggli.html).
+
+## Requirements
+
+- Go 1.21 or later
+- [weggli](https://github.com/weggli-rs/weggli) installed and available on `PATH`
+
+## Installation
+
+```bash
+go build .
+```
 
 ## Usage
 
@@ -19,15 +29,17 @@ Usage of ./wegglist:
         List available themes and exit
   -list-detailed
         List available themes with detailed information
+  -output string
+        Path to a file to also write results to, in addition to stdout
   -path string
         Path to source code (default ".")
   -theme string
         Comma-separated list of themes to analyze. Use 'all' to analyze all themes. (default "all")
 ```
 
-## Format
+Exit code is non-zero if at least one pattern failed to run (for example, due to invalid syntax), which makes it suitable for use in scripts or CI.
 
-JSON is formatted this way
+## Rule file format
 
 ```json
 [
@@ -37,18 +49,8 @@ JSON is formatted this way
     "commands": [
       {
         "code": "pattern",
-        "regex" : "regex use in pattern - this add -R option",
-        "comment": "pattern description"
-      }
-    ]
-  },
-  {
-    "name": "Theme Name",
-    "short": "themeShortName",
-    "commands": [
-      {
-        "code": "pattern",
-        "regex" : "regex use in pattern - this add -R option",
+        "regex": "optional regex filter, adds the weggli -R option",
+        "unique": false,
         "comment": "pattern description"
       }
     ]
@@ -56,18 +58,15 @@ JSON is formatted this way
 ]
 ```
 
-See [base file](cmd.json).
+See [cmd.json](cmd.json) for a complete example.
 
-## How to contribute
+## Contributing
 
-Do not hesitate to fork and add you themes and patterns to the cmd.json :) PR are welcome 
-You can also fork and do WTF you want (see [Licence](LICENSE.md))
+Contributions are welcome. Fork the repository, add themes and patterns to `cmd.json`, and open a pull request. See [LICENSE](LICENSE.md) for license terms.
 
-## TODO
+## Roadmap
 
- - ~~Add --unique option~~
- - Add more patterns :)
- - Add C++ support
- - Add --extensions option
- - Add more test code
- - Add an output to file option
+- Add more patterns
+- Add C++ support
+- Add a `--extensions` option
+- Add more test coverage

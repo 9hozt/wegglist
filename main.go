@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"flag"
 	"fmt"
-	"io/ioutil"
+	"io"
 	"os"
 	"os/exec"
 	"runtime"
@@ -41,26 +41,26 @@ func getWeggliPath() (string, error) {
 	return strings.TrimSpace(string(output)), nil
 }
 
-func runWeggli(weggliPath string, command string, path string, regex string, unique bool) error {
+func runWeggli(out io.Writer, weggliPath string, command string, path string, regex string, unique bool) error {
 	var cmdArgs []string
 
 	if regex != "" {
 		cmdArgs = append(cmdArgs, "-R", regex)
 	}
 
-	if unique == true {
+	if unique {
 		cmdArgs = append(cmdArgs, "--unique")
 	}
 
 	cmdArgs = append(cmdArgs, command, path)
 	cmd := exec.Command(weggliPath, cmdArgs...)
-	cmd.Stdout = os.Stdout
-	cmd.Stderr = os.Stderr
+	cmd.Stdout = out
+	cmd.Stderr = out
 	return cmd.Run()
 }
 
 func loadJSON(jsonFile string) ([]Theme, error) {
-	jsonData, err := ioutil.ReadFile(jsonFile)
+	jsonData, err := os.ReadFile(jsonFile)
 	if err != nil {
 		return nil, err
 	}
@@ -90,18 +90,14 @@ func main() {
 	var jsonFile string
 	var path string
 	var selectedThemes string
+	var outputFile string
 	var listThemesFlag bool
 	var listDetailed bool
-
-	weggliPath, err := getWeggliPath()
-	if err != nil {
-		fmt.Println("Error: weggli not found, check installation - https://github.com/weggli-rs/weggli")
-		os.Exit(1)
-	}
 
 	flag.StringVar(&jsonFile, "json", "cmd.json", "Path to json rules file")
 	flag.StringVar(&path, "path", ".", "Path to source code")
 	flag.StringVar(&selectedThemes, "theme", "all", "Comma-separated list of themes to analyze. Use 'all' to analyze all themes.")
+	flag.StringVar(&outputFile, "output", "", "Path to a file to also write results to, in addition to stdout")
 	flag.BoolVar(&listThemesFlag, "list", false, "List available themes and exit")
 	flag.BoolVar(&listDetailed, "list-detailed", false, "List available themes with detailed information")
 	flag.Parse()
@@ -110,7 +106,7 @@ func main() {
 	if listThemesFlag || listDetailed {
 		if err != nil {
 			fmt.Println("Error while loading JSON file:", err)
-			return
+			os.Exit(1)
 		}
 		listThemes(themes, listDetailed)
 		os.Exit(0)
@@ -118,7 +114,26 @@ func main() {
 
 	if err != nil {
 		fmt.Println("Error while loading JSON file:", err)
-		return
+		os.Exit(1)
+	}
+
+	// Listing themes doesn't need weggli, so this check only runs once we know
+	// an actual scan is requested.
+	weggliPath, err := getWeggliPath()
+	if err != nil {
+		fmt.Println("Error: weggli not found, check installation - https://github.com/weggli-rs/weggli")
+		os.Exit(1)
+	}
+
+	var out io.Writer = os.Stdout
+	if outputFile != "" {
+		f, err := os.Create(outputFile)
+		if err != nil {
+			fmt.Println("Error creating output file:", err)
+			os.Exit(1)
+		}
+		defer f.Close()
+		out = io.MultiWriter(os.Stdout, f)
 	}
 
 	selectedThemeSet := make(map[string]bool)
@@ -129,20 +144,24 @@ func main() {
 		}
 	}
 
-	fmt.Println("Security code analysis:")
+	hadError := false
+	fmt.Fprintln(out, "Security code analysis:")
 	for _, theme := range themes {
-		if selectedThemes == "all" || selectedThemeSet[theme.Short] {
-			fmt.Printf("Current theme - %s:\n", theme.Name)
-			for _, cmd := range theme.Commands {
-				fmt.Printf("%s\n", cmd.Comment)
-				if err := runWeggli(weggliPath, cmd.Code, path, cmd.Regex, cmd.Unique); err != nil {
-					fmt.Printf("Error while analyzing %s: %v\n", theme.Name, err)
-					return
-				}
-
+		if selectedThemes != "all" && !selectedThemeSet[theme.Short] {
+			continue
+		}
+		fmt.Fprintf(out, "Current theme - %s:\n", theme.Name)
+		for _, cmd := range theme.Commands {
+			fmt.Fprintf(out, "%s\n", cmd.Comment)
+			if err := runWeggli(out, weggliPath, cmd.Code, path, cmd.Regex, cmd.Unique); err != nil {
+				fmt.Fprintf(out, "Error while running pattern %q for theme %s: %v\n", cmd.Code, theme.Name, err)
+				hadError = true
 			}
 		}
 	}
-	fmt.Println("Done!")
-	os.Exit(0)
+	fmt.Fprintln(out, "Done!")
+
+	if hadError {
+		os.Exit(1)
+	}
 }

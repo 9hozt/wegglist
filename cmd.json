@@ -79,7 +79,7 @@
         "comment": "Dumb double free"
       },
       {
-        "code": "{ $buf = malloc(); not if($buff);}",
+        "code": "{ $buf = malloc(_); not: if($buf);}",
         "comment": "Find unverified malloc results"
       }
     ]
@@ -90,7 +90,7 @@
     "commands": [
       {
         "code": "{ strict: printf(_); }",
-        "comment": "Allocated memory not freed"
+        "comment": "Non-constant format string passed to printf"
       }
     ]
   },
