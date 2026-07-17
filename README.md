@@ -4,7 +4,9 @@
 
 ## Introduction
 
-wegglist is a Go wrapper around [weggli](https://github.com/weggli-rs/weggli) that centralizes and organizes semantic search patterns into themes, so a full set of patterns can be run against a codebase in a single command instead of one `weggli` invocation per pattern.
+wegglist is a small Go wrapper around [weggli](https://github.com/weggli-rs/weggli) meant to speed up the first pass of a manual C code audit. It organizes a batch of semantic search patterns into themes (buffer overflows, heap issues, format strings, ...) and runs them all against a codebase in one command instead of invoking `weggli` pattern by pattern, printing out the lines it considers potentially vulnerable so you know where to start looking.
+
+It is not a vulnerability scanner and does not confirm anything on its own: every hit is a pattern match, not a proven bug, and it will miss anything that doesn't fit its patterns. Treat the output as a shortlist to review by hand, not a verdict.
 
 Most patterns are sourced from [0xdea/weggli-patterns](https://github.com/0xdea/weggli-patterns). The project was also inspired by [this article](https://dustri.org/b/playing-with-weggli.html).
 
